@@ -76,6 +76,19 @@ route.get(`/`, async (req, res) => {
    res.send(listArt)
 })
 
+route.get(`/gallery/:artName`, async (req, res) => {
+   
+   const listArt = await ArtCollection.find({artName: req.params.artName}).populate('creator')
+
+   if(!listArt) {
+      res.status(500).json({
+         success: false
+      })
+   }
+
+   res.send(listArt)
+})
+
 route.get('/images', (req, res) => {
    
    gfs.collection('kinarts').files.find().toArray((err, files) => { 
