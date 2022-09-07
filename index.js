@@ -14,7 +14,7 @@ const { Server } = require("socket.io")
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
    cors: {
-      origin: ["https://kinarts.web.app", "http://localhost:3000", "http://192.168.100.10:3000", '*'],
+      origin: ["https://kinarts.web.app", "http://localhost:3000", "https://kinarts.art"],
       methods: ["GET", "POST"],
       allowedHeaders: ["my-custom-header"],
       credentials: true
