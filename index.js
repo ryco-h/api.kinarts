@@ -55,10 +55,12 @@ app.use("/public/uploads", express.static(path.join(__dirname + "/public/uploads
 const artCollectionRouter = require('./routes/artCollections')
 const artMedia = require('./routes/artMedia')
 const creatorRouter = require('./routes/creators')
+const loginAuth = require('./routes/login')
 
 app.use(`${api}/artcollection`, artCollectionRouter)
 app.use(`${media}/`, artMedia)
 app.use(`${api}/creator`, creatorRouter)
+app.use(`/account`, loginAuth)
 
 mongoose.connect(process.env.DB_URL, {
    useNewUrlParser: true,
