@@ -33,18 +33,18 @@ route.get(`/`, async (req, res) => {
    res.send(creatorList)
 })
 
-route.post(`/`, uploadOptions.single('creatorPfp'), async (req, res) => {
+route.post(`/`, async (req, res) => {
    
-   const file = req.file;
-   if (!file) return res.status(400).send('No image in the request');
+   // const file = req.file;
+   // if (!file) return res.status(400).send('No image in the request');
 
-   const fileName = file.filename;
-   const basePath = `${req.protocol}://${req.get('host')}/public/uploads/creator/`;
+   // const fileName = file.filename;
+   // const basePath = `${req.protocol}://${req.get('host')}/public/uploads/creator/`;
 
    let creator = new Creator({
       creatorName: req.body.creatorName,
       creatorNickname: req.body.creatorNickname,
-      creatorPfp: `${basePath}${fileName}`,
+      // creatorPfp: `${basePath}${fileName}`,
       bio: req.body.bio,
       instagramUrl: req.body.instagramUrl,
       youtubeUrl: req.body.youtubeUrl,

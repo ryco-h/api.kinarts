@@ -314,23 +314,19 @@ route.get('/donate-artcollection', (req, res) => {
         // Below is the HTTP request body in JSON
         {
           transaction_details: {
-            order_id: "order-csb-" + req.query.artName.replace(/ /g, '-') + '-' + getCurrentTimestamp(),
+            order_id: "donation-kinarts-" + req.query.artName.replace(/ /g, '-') + '-' + getCurrentTimestamp(),
             gross_amount: new Number(req.query.nominal_donasi)
           },
           credit_card: {
             secure: true
           },
           customer_details: {
-            first_name: "Guest",
-            last_name: "User",
-            email: "guest_user@email.com",
-            phone: "08111222333"
+            note: req.query.note
           }
         }
     }).then(
       (snapResponse) => {
         let snapToken = snapResponse.data.token;
-        console.log("Retrieved snap token:", snapToken);
         // Pass the Snap Token to frontend, render the HTML page
         res.send(snapToken);
       },

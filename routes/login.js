@@ -1,5 +1,6 @@
 const { default: axios } = require('axios')
 const express = require('express')
+const { GoogleAccount } = require('../models/googleAccount')
 const route = express.Router()
 
 route.post('/google/auth', async(req, res) => {
@@ -21,15 +22,56 @@ route.post('/google/auth', async(req, res) => {
       )
       .then(info => info.data)
       .catch(err => err)
+      
+      let checkGoogleAccount = await GoogleAccount.find({_id: userData.sub})
 
-      return res.send(userData)
+      console.log(checkGoogleAccount)
+
+      
+      if(checkGoogleAccount[0]) {
+         
+         console.log('exec 1')
+         return res.send(checkGoogleAccount[0])
+      } else {
+         
+         console.log('exec 2')
+         let googleAccount = await GoogleAccount.create({
+            _id: userData.sub,
+            email: userData.email,
+            name: userData.name,
+            picture: userData.picture,
+         })
+         
+         googleAccount.save()
+         
+         return res.send(googleAccount)
+      }
 
    } else if(req.body.jwt) {
       code = req.body.jwt
 
       let userData = parseJWT(code)
 
-      return res.send(userData)
+      let checkGoogleAccount = await GoogleAccount.find({_id: userData.sub})
+      
+      console.log(checkGoogleAccount === [], '2')
+
+      if(checkGoogleAccount[0]) {
+
+         return res.send(checkGoogleAccount[0])
+      } else {
+         
+         let googleAccount = await GoogleAccount.create({
+            _id: userData.sub,
+            email: userData.email,
+            name: userData.name,
+            picture: userData.picture,
+         })
+         
+         googleAccount.save()
+         
+         return res.send(googleAccount)
+      }
    }
 })
 
