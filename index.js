@@ -56,11 +56,13 @@ const artCollectionRouter = require('./routes/artCollections')
 const artMedia = require('./routes/artMedia')
 const creatorRouter = require('./routes/creators')
 const loginAuth = require('./routes/login')
+const comment = require('./routes/comments')
 
 app.use(`${api}/artcollection`, artCollectionRouter)
 app.use(`${media}/`, artMedia)
 app.use(`${api}/creator`, creatorRouter)
 app.use(`/account`, loginAuth)
+app.use(`/comment`, comment)
 
 mongoose.connect(process.env.DB_URL, {
    useNewUrlParser: true,
