@@ -25,16 +25,11 @@ route.post('/google/auth', async(req, res) => {
       
       let checkGoogleAccount = await GoogleAccount.find({_id: userData.sub})
 
-      console.log(checkGoogleAccount)
-
-      
       if(checkGoogleAccount[0]) {
          
-         console.log('exec 1')
          return res.send(checkGoogleAccount[0])
       } else {
          
-         console.log('exec 2')
          let googleAccount = await GoogleAccount.create({
             _id: userData.sub,
             email: userData.email,
@@ -53,8 +48,6 @@ route.post('/google/auth', async(req, res) => {
       let userData = parseJWT(code)
 
       let checkGoogleAccount = await GoogleAccount.find({_id: userData.sub})
-      
-      console.log(checkGoogleAccount === [], '2')
 
       if(checkGoogleAccount[0]) {
 
