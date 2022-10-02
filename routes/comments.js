@@ -4,10 +4,13 @@ const { Comment } = require('../models/comment')
 const nodemailer = require("nodemailer");
 const { GoogleAccount } = require('../models/googleAccount');
 const { ArtCollection } = require('../models/artCollection');
+const auth = require('../middleware/auth')
 
-route.post('/post', async(req, res) => {
+route.post('/post', auth, async(req, res) => {
 
-   let testAccount = await nodemailer.createTestAccount();
+   if(req.body.comment === '' || req.body.comment === undefined) {
+      return res.send({message: 'Comment can not be empty', status: 400})
+   }
 
    // create reusable transporter object using the default SMTP transport
    let transporter = nodemailer.createTransport({
@@ -31,7 +34,7 @@ route.post('/post', async(req, res) => {
    let googleAccount = await GoogleAccount.find({_id: req.body.user})
    let artCollection = await ArtCollection.find({_id: req.body.postID})
 
-   let info = await transporter.sendMail({
+   await transporter.sendMail({
       from: 'ican@kinarts.art',
       to: 'roaddevil53@gmail.com, kinnaruchann@gmail.com',
       subject: 'Comment Notification',
@@ -51,6 +54,22 @@ route.post('/post', async(req, res) => {
       status: 200
    })
 })
+
+route.delete('/delete/:commentID', async(req, res) => {
+
+   let commentParentToDelete = await Comment.findByIdAndDelete(req.params.commentID)
+
+   if(commentParentToDelete) {
+
+      await Comment.deleteMany({parentComment: req.params.commentID})
+   } else {
+
+      await Comment.findByIdAndDelete(req.params.commentID)
+   }
+
+   res.send({message: 'Comment deleted', status: 200})
+})
+
 
 route.get('/:postID', async(req, res) => {
 

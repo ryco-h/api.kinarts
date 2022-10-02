@@ -10,6 +10,7 @@ const GoogleAccountSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'artcollection'
    }],
+   token: String
 })
 
 exports.GoogleAccount = mongoose.model('googleAccount', GoogleAccountSchema)

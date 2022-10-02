@@ -2,6 +2,9 @@ const { default: axios } = require('axios')
 const express = require('express')
 const { GoogleAccount } = require('../models/googleAccount')
 const route = express.Router()
+const auth = require('../middleware/auth')
+const jwt = require("jsonwebtoken")
+const bcrypt = require("bcryptjs")
 
 route.post('/google/auth', async(req, res) => {
 
@@ -26,6 +29,13 @@ route.post('/google/auth', async(req, res) => {
       let checkGoogleAccount = await GoogleAccount.find({_id: userData.sub})
 
       if(checkGoogleAccount[0]) {
+
+         const token = jwt.sign(
+            { checkGoogleAccount: checkGoogleAccount[0]._id, email: userData.email },
+            process.env.TOKEN_KEY,
+         )
+      
+         checkGoogleAccount[0].token = token
          
          return res.send(checkGoogleAccount[0])
       } else {
@@ -36,6 +46,13 @@ route.post('/google/auth', async(req, res) => {
             name: userData.name,
             picture: userData.picture,
          })
+
+         const token = jwt.sign(
+            { googleAccount: googleAccount._id, email: userData.email },
+            process.env.TOKEN_KEY,
+         )
+      
+         googleAccount.token = token
          
          googleAccount.save()
          
@@ -51,6 +68,13 @@ route.post('/google/auth', async(req, res) => {
 
       if(checkGoogleAccount[0]) {
 
+         const token = jwt.sign(
+            { checkGoogleAccount: checkGoogleAccount[0]._id, email: userData.email },
+            process.env.TOKEN_KEY,
+         )
+      
+         checkGoogleAccount[0].token = token
+         
          return res.send(checkGoogleAccount[0])
       } else {
          
@@ -60,6 +84,13 @@ route.post('/google/auth', async(req, res) => {
             name: userData.name,
             picture: userData.picture,
          })
+
+         const token = jwt.sign(
+            { googleAccount: googleAccount._id, email: userData.email },
+            process.env.TOKEN_KEY,
+         )
+      
+         googleAccount.token = token
          
          googleAccount.save()
          
