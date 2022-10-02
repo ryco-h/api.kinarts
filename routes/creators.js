@@ -65,7 +65,7 @@ route.put(`/:id`, uploadOptions.single('creatorPfp'), async (req, res) => {
 
    if (file) {
       fs.unlink("public/uploads/creator/"+creator.creatorPfp.replace(`${req.protocol}://${req.get('host')}/public/uploads/creator`, ''), (err) => {
-         console.log(err)
+         //
       })
       const fileName = file.filename;
       const basePath = `${req.protocol}://${req.get('host')}/public/uploads/creator/`;
@@ -112,11 +112,11 @@ route.delete(`/:id`, async (req, res) => {
 
    Creator.findByIdAndDelete(req.params.id)
    .then((creator) => {
-      console.log(imagepath)
+      
       if (creator) {
          
          fs.unlink("public/uploads/creator/"+imagepath.replace(`${req.protocol}://${req.get('host')}/public/uploads/creator`, ''), (err) => {
-            console.log(err)
+            //
          })
          return res.status(200).json({
             success: true,

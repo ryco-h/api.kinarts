@@ -50,7 +50,6 @@ route.get('/images/gifs', (req, res) => {
        });
      }
      
-     console.log(files.contentType)
      // Files exist
      return res.json(files.filter(file => file.contentType === 'image/gif'));
    });
@@ -65,7 +64,6 @@ route.get('/images/pngs', (req, res) => {
        });
      }
      
-     console.log(files.contentType)
      // Files exist
      return res.json(files.filter(file => file.contentType === 'image/png'));
    });

@@ -122,7 +122,7 @@ route.get('/img', (req, res) => {
    // });
 
    gridfsBucket.find({filename: filePath}).toArray(files=>{
-      console.log(files)
+      //
    })
 
    res.send(parentCount)
@@ -162,8 +162,6 @@ route.post(`/`, upload.single('imageArtUrl'), async (req, res) => {
 })
 
 route.put(`/:id`, upload.single('imageArtUrl'), async (req, res) => {
-
-   console.log('passed', '144')
 
    const artCollection = await ArtCollection.findById(req.params.id);
    if (!artCollection) return res.status(400).send('Invalid Collection!');
@@ -214,7 +212,6 @@ route.delete(`/:id`, async (req, res) => {
 
    const post = await ArtCollection.findOneAndDelete({ _id: req.params.id });
    
-   console.log(post) 
    if(post !== null) {
       const filePath = post.imageArtUrl.replace(`https://kinarts.herokuapp.com/media/image/`, '')
       if (filePath) {
