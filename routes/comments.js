@@ -13,13 +13,13 @@ route.post('/post', auth, async(req, res) => {
    }
 
    // create reusable transporter object using the default SMTP transport
-   let transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-         user: 'ican@kinarts.art',
-         pass: process.env.PASS
-      }
-   });
+   // let transporter = nodemailer.createTransport({
+   //    service: 'gmail',
+   //    auth: {
+   //       user: 'ican@kinarts.art',
+   //       pass: process.env.PASS
+   //    }
+   // });
 
    let comment = await Comment.create({
       parentComment: (req.body.parentComment !== null) ? req.body.parentComment : null,
@@ -31,23 +31,23 @@ route.post('/post', auth, async(req, res) => {
 
    comment.save()
 
-   let googleAccount = await GoogleAccount.find({_id: req.body.user})
-   let artCollection = await ArtCollection.find({_id: req.body.postID})
+   // let googleAccount = await GoogleAccount.find({_id: req.body.user})
+   // let artCollection = await ArtCollection.find({_id: req.body.postID})
 
-   await transporter.sendMail({
-      from: 'ican@kinarts.art',
-      to: 'roaddevil53@gmail.com, kinnaruchann@gmail.com',
-      subject: 'Comment Notification',
-      text: 'Comment Notification',
-      html: `
-      <p>Someone Commented!</p>
-      <ul>
-         <li>User: ${googleAccount[0].name}</li>
-         <li>Comment: ${req.body.comment}</li>
-         <li>Link post: <a href='https://kinarts.art/kinnaruchann/${artCollection[0].artName}'>${artCollection[0].artName}</a></li>
-      </ul>
-      `,
-   })
+   // await transporter.sendMail({
+   //    from: 'ican@kinarts.art',
+   //    to: 'roaddevil53@gmail.com, kinnaruchann@gmail.com',
+   //    subject: 'Comment Notification',
+   //    text: 'Comment Notification',
+   //    html: `
+   //    <p>Someone Commented!</p>
+   //    <ul>
+   //       <li>User: ${googleAccount[0].name}</li>
+   //       <li>Comment: ${req.body.comment}</li>
+   //       <li>Link post: <a href='https://kinarts.art/kinnaruchann/${artCollection[0].artName}'>${artCollection[0].artName}</a></li>
+   //    </ul>
+   //    `,
+   // })
 
    res.send({
       message: 'Succesful',
